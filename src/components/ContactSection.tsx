@@ -102,9 +102,9 @@ const ContactSection = () => {
           className="flex items-center justify-center gap-6 mt-10"
         >
           {[
-            { icon: <Github size={20} />, href: "https://github.com/prajwalgowda", label: "GitHub" },
-            { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/prajwalgowda", label: "LinkedIn" },
-            { icon: <Mail size={20} />, href: "mailto:prajwalgowda@email.com", label: "Email" },
+            { icon: <Github size={20} />, href: "https://github.com/Prajwal402", label: "GitHub" },
+            { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/b-b-prajwal-3b1449267", label: "LinkedIn" },
+            { icon: <Mail size={20} />, href: "mailto:prajwalgowda17003@gmail.com", label: "Email" },
           ].map((s) => (
             <a
               key={s.label}
