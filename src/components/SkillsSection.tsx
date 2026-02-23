@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTilt3D } from "@/hooks/useTilt3D";
 
 interface Skill {
   name: string;
@@ -76,25 +77,38 @@ const SkillsSection = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {skillGroups.map((group, gi) => (
-            <motion.div
-              key={group.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: gi * 0.15 }}
-              className="glass rounded-xl p-6 hover:neon-border transition-all duration-300"
-            >
-              <h3 className="font-heading font-semibold text-lg text-primary mb-6">
-                {group.title}
-              </h3>
-              <div className="space-y-5">
-                {group.skills.map((skill, si) => (
-                  <SkillBar key={skill.name} skill={skill} delay={si * 0.1} />
-                ))}
-              </div>
-            </motion.div>
-          ))}
+          {skillGroups.map((group, gi) => {
+            const TiltCard = () => {
+              const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(8);
+              return (
+                <motion.div
+                  key={group.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: gi * 0.15 }}
+                >
+                  <div
+                    ref={ref}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                    className="glass rounded-xl p-6 hover:neon-border transition-all duration-300"
+                    style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
+                  >
+                    <h3 className="font-heading font-semibold text-lg text-primary mb-6">
+                      {group.title}
+                    </h3>
+                    <div className="space-y-5">
+                      {group.skills.map((skill, si) => (
+                        <SkillBar key={skill.name} skill={skill} delay={si * 0.1} />
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            };
+            return <TiltCard key={group.title} />;
+          })}
         </div>
       </div>
     </section>

@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, FolderOpen, Mail } from "lucide-react";
+
+const HeroBackground3D = lazy(() => import("./HeroBackground3D"));
 
 const roles = ["Full Stack Developer", "React Engineer", "Backend Developer", "Problem Solver"];
 
@@ -35,7 +37,12 @@ const HeroSection = () => {
   }, [text, isDeleting, roleIndex]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center section-padding floating-dots overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center section-padding overflow-hidden">
+      {/* 3D Background */}
+      <Suspense fallback={null}>
+        <HeroBackground3D />
+      </Suspense>
+
       {/* Ambient glow */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
