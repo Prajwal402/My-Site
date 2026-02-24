@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Code2, Server, Lightbulb } from "lucide-react";
+import prajwalPhoto from "@/assets/prajwal-photo.jpeg";
 
 const AboutSection = () => {
   return (
@@ -24,8 +25,16 @@ const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-5"
+            className="space-y-6"
           >
+            <div className="relative w-48 h-48 mx-auto md:mx-0 mb-4">
+              <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl" />
+              <img
+                src={prajwalPhoto}
+                alt="Prajwal Gowda"
+                className="relative w-48 h-48 rounded-full object-cover border-2 border-primary/40 shadow-[0_0_30px_hsl(185_100%_50%/0.2)]"
+              />
+            </div>
             <p className="text-muted-foreground leading-relaxed">
               I'm a passionate Full Stack Developer with a strong foundation in both frontend and backend technologies. 
               I love transforming complex problems into simple, elegant, and intuitive solutions.
