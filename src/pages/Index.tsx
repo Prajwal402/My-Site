@@ -7,6 +7,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
+import SectionDivider from "@/components/SectionDivider";
 
 const Index = () => {
   return (
@@ -14,10 +15,15 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <SectionDivider />
         <AboutSection />
+        <SectionDivider />
         <SkillsSection />
+        <SectionDivider />
         <ProjectsSection />
+        <SectionDivider />
         <ExperienceSection />
+        <SectionDivider />
         <ContactSection />
       </main>
       <Footer />

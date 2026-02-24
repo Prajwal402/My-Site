@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTilt3D } from "@/hooks/useTilt3D";
+import FloatingOrbs from "./FloatingOrbs";
 
 interface Skill {
   name: string;
@@ -54,15 +55,49 @@ const SkillBar = ({ skill, delay }: { skill: Skill; delay: number }) => (
         viewport={{ once: true }}
         transition={{ duration: 1, delay: delay + 0.2, ease: "easeOut" }}
         className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
+        style={{
+          boxShadow: "0 0 10px hsl(var(--primary) / 0.4)",
+        }}
       />
     </div>
   </motion.div>
 );
 
+const TiltCard = ({ group, gi }: { group: typeof skillGroups[0]; gi: number }) => {
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(10);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: gi * 0.15 }}
+    >
+      <div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="glass rounded-xl p-6 hover:neon-border transition-all duration-300 h-full"
+        style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
+      >
+        <h3 className="font-heading font-semibold text-lg text-primary mb-6">
+          {group.title}
+        </h3>
+        <div className="space-y-5">
+          {group.skills.map((skill, si) => (
+            <SkillBar key={skill.name} skill={skill} delay={si * 0.1} />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const SkillsSection = () => {
   return (
-    <section id="skills" className="section-padding">
-      <div className="max-w-6xl mx-auto">
+    <section id="skills" className="section-padding relative">
+      <FloatingOrbs variant="default" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -77,38 +112,9 @@ const SkillsSection = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {skillGroups.map((group, gi) => {
-            const TiltCard = () => {
-              const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(8);
-              return (
-                <motion.div
-                  key={group.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: gi * 0.15 }}
-                >
-                  <div
-                    ref={ref}
-                    onMouseMove={handleMouseMove}
-                    onMouseLeave={handleMouseLeave}
-                    className="glass rounded-xl p-6 hover:neon-border transition-all duration-300"
-                    style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
-                  >
-                    <h3 className="font-heading font-semibold text-lg text-primary mb-6">
-                      {group.title}
-                    </h3>
-                    <div className="space-y-5">
-                      {group.skills.map((skill, si) => (
-                        <SkillBar key={skill.name} skill={skill} delay={si * 0.1} />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            };
-            return <TiltCard key={group.title} />;
-          })}
+          {skillGroups.map((group, gi) => (
+            <TiltCard key={group.title} group={group} gi={gi} />
+          ))}
         </div>
       </div>
     </section>

@@ -28,33 +28,53 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? "glass-strong shadow-lg" : "bg-transparent"
       }`}
+      style={scrolled ? {
+        boxShadow: "0 4px 30px rgba(0,0,0,0.3), 0 0 15px hsl(var(--primary) / 0.05)",
+      } : undefined}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#" className="text-xl font-heading font-bold neon-text">
+        <motion.a
+          href="#"
+          className="text-xl font-heading font-bold neon-text"
+          whileHover={{ scale: 1.05, rotateY: 10 }}
+          style={{ perspective: "600px" }}
+        >
           {"<PG />"}
-        </a>
+        </motion.a>
 
         {/* Desktop */}
         <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <li key={link.href}>
+          {navLinks.map((link, i) => (
+            <motion.li
+              key={link.href}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * i + 0.3 }}
+            >
               <a
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 relative group"
               >
                 {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
               </a>
-            </li>
+            </motion.li>
           ))}
-          <li>
-            <a
+          <motion.li
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <motion.a
               href="/Prajwal_Gowda_Resume.pdf"
               target="_blank"
               className="text-sm font-medium px-4 py-2 rounded-lg border border-primary/40 text-primary hover:bg-primary/10 transition-all duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Resume
-            </a>
-          </li>
+            </motion.a>
+          </motion.li>
         </ul>
 
         {/* Mobile toggle */}

@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Briefcase, GraduationCap } from "lucide-react";
+import { useTilt3D } from "@/hooks/useTilt3D";
+import FloatingOrbs from "./FloatingOrbs";
 
 const timeline = [
   {
@@ -32,10 +34,63 @@ const timeline = [
   },
 ];
 
+const TimelineCard = ({ item, i }: { item: typeof timeline[0]; i: number }) => {
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(10);
+
+  return (
+    <motion.div
+      key={i}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: i * 0.15 }}
+      className={`relative flex items-start gap-6 mb-12 ${
+        i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+      }`}
+    >
+      {/* Dot with pulse */}
+      <div className="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 mt-1.5">
+        <div className="w-3 h-3 rounded-full bg-primary neon-glow" />
+        <motion.div
+          className="absolute inset-[-4px] rounded-full border border-primary/30"
+          animate={{ scale: [1, 1.8, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+        />
+      </div>
+
+      {/* Content */}
+      <div
+        className={`ml-14 md:ml-0 md:w-[calc(50%-2rem)] ${
+          i % 2 === 0 ? "md:pr-8 md:text-right" : "md:pl-8"
+        }`}
+      >
+        <div
+          ref={ref}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className="glass rounded-xl p-5 hover:neon-border transition-all duration-300"
+          style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
+        >
+          <div className={`flex items-center gap-2 mb-2 ${i % 2 === 0 ? "md:justify-end" : ""}`}>
+            <span className="text-primary">
+              {item.type === "work" ? <Briefcase size={16} /> : <GraduationCap size={16} />}
+            </span>
+            <span className="text-xs font-mono text-primary">{item.period}</span>
+          </div>
+          <h3 className="font-heading font-semibold text-foreground mb-2">{item.title}</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const ExperienceSection = () => {
   return (
-    <section id="experience" className="section-padding">
-      <div className="max-w-4xl mx-auto">
+    <section id="experience" className="section-padding relative">
+      <FloatingOrbs variant="sparse" />
+
+      <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -50,51 +105,16 @@ const ExperienceSection = () => {
         </motion.div>
 
         <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-5 md:left-1/2 top-0 bottom-0 w-px bg-border" />
+          {/* Glowing vertical line */}
+          <div
+            className="absolute left-5 md:left-1/2 top-0 bottom-0 w-px"
+            style={{
+              background: "linear-gradient(to bottom, hsl(var(--primary) / 0.4), hsl(var(--accent) / 0.2), transparent)",
+            }}
+          />
 
           {timeline.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className={`relative flex items-start gap-6 mb-12 ${
-                i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-              }`}
-            >
-              {/* Dot */}
-              <div className="absolute left-5 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary neon-glow z-10 mt-1.5" />
-
-              {/* Content */}
-              <div
-                className={`ml-14 md:ml-0 md:w-[calc(50%-2rem)] ${
-                  i % 2 === 0 ? "md:pr-8 md:text-right" : "md:pl-8"
-                }`}
-              >
-                <div className="glass rounded-xl p-5 hover:neon-border transition-all duration-300">
-                  <div className={`flex items-center gap-2 mb-2 ${i % 2 === 0 ? "md:justify-end" : ""}`}>
-                    <span className="text-primary">
-                      {item.type === "work" ? (
-                        <Briefcase size={16} />
-                      ) : (
-                        <GraduationCap size={16} />
-                      )}
-                    </span>
-                    <span className="text-xs font-mono text-primary">
-                      {item.period}
-                    </span>
-                  </div>
-                  <h3 className="font-heading font-semibold text-foreground mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+            <TimelineCard key={i} item={item} i={i} />
           ))}
         </div>
       </div>

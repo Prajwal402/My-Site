@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, ExternalLink } from "lucide-react";
 import { useTilt3D } from "@/hooks/useTilt3D";
+import FloatingOrbs from "./FloatingOrbs";
 
 interface Project {
   title: string;
@@ -54,7 +55,7 @@ const projects: Project[] = [
 const filters = ["All", "Frontend", "Backend", "Full Stack"] as const;
 
 const ProjectCard = ({ project }: { project: Project }) => {
-  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(8);
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(10);
   return (
     <motion.div
       layout
@@ -67,7 +68,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="glass rounded-xl p-6 group hover:neon-border transition-all duration-300"
+        className="glass rounded-xl p-6 group hover:neon-border transition-all duration-300 h-full"
         style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
       >
         <div className="flex items-start justify-between mb-3">
@@ -103,8 +104,10 @@ const ProjectsSection = () => {
       : projects.filter((p) => p.category === active);
 
   return (
-    <section id="projects" className="section-padding">
-      <div className="max-w-6xl mx-auto">
+    <section id="projects" className="section-padding relative">
+      <FloatingOrbs variant="dense" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,12 +121,14 @@ const ProjectsSection = () => {
           <div className="w-20 h-0.5 bg-primary/40 mb-8" />
         </motion.div>
 
-        {/* Filters */}
+        {/* 3D filter buttons */}
         <div className="flex flex-wrap gap-3 mb-10">
           {filters.map((f) => (
-            <button
+            <motion.button
               key={f}
               onClick={() => setActive(f)}
+              whileHover={{ scale: 1.05, rotateX: 5 }}
+              whileTap={{ scale: 0.95 }}
               className={`text-sm px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 active === f
                   ? "bg-primary text-primary-foreground shadow-[0_0_20px_hsl(185_100%_50%/0.3)]"
@@ -131,7 +136,7 @@ const ProjectsSection = () => {
               }`}
             >
               {f}
-            </button>
+            </motion.button>
           ))}
         </div>
 
