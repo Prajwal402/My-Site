@@ -1,22 +1,26 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Send, Github, Linkedin, Mail } from "lucide-react";
+import { useTilt3D } from "@/hooks/useTilt3D";
+import FloatingOrbs from "./FloatingOrbs";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const { ref: formRef, handleMouseMove, handleMouseLeave } = useTilt3D(6);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // In production, integrate with a backend
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
     setForm({ name: "", email: "", message: "" });
   };
 
   return (
-    <section id="contact" className="section-padding">
-      <div className="max-w-3xl mx-auto text-center">
+    <section id="contact" className="section-padding relative">
+      <FloatingOrbs variant="dense" />
+
+      <div className="max-w-3xl mx-auto text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -33,19 +37,21 @@ const ContactSection = () => {
           </p>
         </motion.div>
 
-        <motion.form
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          onSubmit={handleSubmit}
-          className="glass rounded-xl p-8 text-left space-y-5"
+          ref={formRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className="glass rounded-xl p-8 hover:neon-border transition-all duration-300"
+          style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
         >
+        <form onSubmit={handleSubmit} className="text-left space-y-5">
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="text-sm text-muted-foreground mb-1.5 block">
-                Name
-              </label>
+              <label className="text-sm text-muted-foreground mb-1.5 block">Name</label>
               <input
                 type="text"
                 required
@@ -56,9 +62,7 @@ const ContactSection = () => {
               />
             </div>
             <div>
-              <label className="text-sm text-muted-foreground mb-1.5 block">
-                Email
-              </label>
+              <label className="text-sm text-muted-foreground mb-1.5 block">Email</label>
               <input
                 type="email"
                 required
@@ -70,9 +74,7 @@ const ContactSection = () => {
             </div>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground mb-1.5 block">
-              Message
-            </label>
+            <label className="text-sm text-muted-foreground mb-1.5 block">Message</label>
             <textarea
               required
               rows={5}
@@ -91,9 +93,10 @@ const ContactSection = () => {
             <Send size={16} />
             {submitted ? "Sent!" : "Send Message"}
           </button>
-        </motion.form>
+        </form>
+        </motion.div>
 
-        {/* Social links */}
+        {/* Social links with 3D hover */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -106,16 +109,19 @@ const ContactSection = () => {
             { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/b-b-prajwal-3b1449267", label: "LinkedIn" },
             { icon: <Mail size={20} />, href: "mailto:prajwalgowda17003@gmail.com", label: "Email" },
           ].map((s) => (
-            <a
+            <motion.a
               key={s.label}
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors duration-200"
+              className="w-12 h-12 rounded-xl glass flex items-center justify-center text-muted-foreground hover:text-primary hover:neon-border transition-all duration-300"
               aria-label={s.label}
+              whileHover={{ scale: 1.15, rotateY: 15 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ perspective: "600px" }}
             >
               {s.icon}
-            </a>
+            </motion.a>
           ))}
         </motion.div>
       </div>

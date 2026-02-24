@@ -1,7 +1,30 @@
 import { motion } from "framer-motion";
 import { Code2, Server, Lightbulb } from "lucide-react";
 import { useRef, useState } from "react";
+import { useTilt3D } from "@/hooks/useTilt3D";
+import FloatingOrbs from "./FloatingOrbs";
 import prajwalPhoto from "@/assets/prajwal-photo.jpeg";
+
+const AboutCard = ({ item, i }: { item: { icon: React.ReactNode; title: string; desc: string }; i: number }) => {
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(10);
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="glass rounded-xl p-5 group hover:neon-border transition-all duration-300"
+      style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
+    >
+      <div className="flex items-start gap-4">
+        <span className="text-primary mt-0.5 group-hover:animate-float">{item.icon}</span>
+        <div>
+          <h3 className="font-heading font-semibold text-foreground mb-1">{item.title}</h3>
+          <p className="text-sm text-muted-foreground">{item.desc}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const AboutSection = () => {
   const photoRef = useRef<HTMLDivElement>(null);
@@ -17,9 +40,29 @@ const AboutSection = () => {
 
   const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
 
+  const cards = [
+    {
+      icon: <Code2 size={22} />,
+      title: "Frontend Craft",
+      desc: "Building responsive, accessible, and performant user interfaces with modern frameworks.",
+    },
+    {
+      icon: <Server size={22} />,
+      title: "Backend Architecture",
+      desc: "Designing RESTful APIs, managing databases, and implementing secure authentication systems.",
+    },
+    {
+      icon: <Lightbulb size={22} />,
+      title: "Problem Solving",
+      desc: "Breaking down complex challenges into clean, maintainable, and testable solutions.",
+    },
+  ];
+
   return (
-    <section id="about" className="section-padding">
-      <div className="max-w-6xl mx-auto">
+    <section id="about" className="section-padding relative">
+      <FloatingOrbs variant="sparse" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +101,6 @@ const AboutSection = () => {
                   WebkitMaskImage: "radial-gradient(circle, transparent 45%, black 46%)",
                 }}
               />
-              {/* 3D photo container */}
               <div
                 className="relative w-full h-full rounded-full transition-transform duration-200 ease-out"
                 style={{
@@ -66,12 +108,10 @@ const AboutSection = () => {
                   transformStyle: "preserve-3d",
                 }}
               >
-                {/* Shadow layer */}
                 <div
                   className="absolute inset-2 rounded-full bg-primary/20 blur-2xl"
                   style={{ transform: "translateZ(-40px)" }}
                 />
-                {/* Photo */}
                 <img
                   src={prajwalPhoto}
                   alt="Prajwal Gowda"
@@ -81,7 +121,6 @@ const AboutSection = () => {
                     boxShadow: "0 0 40px hsl(var(--primary) / 0.25), 0 20px 60px rgba(0,0,0,0.4)",
                   }}
                 />
-                {/* Glass highlight overlay */}
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
@@ -113,39 +152,8 @@ const AboutSection = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="grid gap-4"
           >
-            {[
-              {
-                icon: <Code2 size={22} />,
-                title: "Frontend Craft",
-                desc: "Building responsive, accessible, and performant user interfaces with modern frameworks.",
-              },
-              {
-                icon: <Server size={22} />,
-                title: "Backend Architecture",
-                desc: "Designing RESTful APIs, managing databases, and implementing secure authentication systems.",
-              },
-              {
-                icon: <Lightbulb size={22} />,
-                title: "Problem Solving",
-                desc: "Breaking down complex challenges into clean, maintainable, and testable solutions.",
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="glass rounded-xl p-5 group hover:neon-border transition-all duration-300"
-              >
-                <div className="flex items-start gap-4">
-                  <span className="text-primary mt-0.5 group-hover:animate-float">
-                    {item.icon}
-                  </span>
-                  <div>
-                    <h3 className="font-heading font-semibold text-foreground mb-1">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
-                  </div>
-                </div>
-              </div>
+            {cards.map((item, i) => (
+              <AboutCard key={i} item={item} i={i} />
             ))}
           </motion.div>
         </div>
