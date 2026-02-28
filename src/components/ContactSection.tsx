@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Send, Github, Linkedin, Mail } from "lucide-react";
+import { Send, Github, Linkedin, Mail, Instagram } from "lucide-react";
 import { useTilt3D } from "@/hooks/useTilt3D";
 import FloatingOrbs from "./FloatingOrbs";
 
@@ -107,6 +107,7 @@ const ContactSection = () => {
           {[
             { icon: <Github size={20} />, href: "https://github.com/Prajwal402", label: "GitHub" },
             { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/b-b-prajwal-3b1449267", label: "LinkedIn" },
+            { icon: <Instagram size={20} />, href: "https://www.instagram.com/accounts/edit/", label: "Instagram" },
             { icon: <Mail size={20} />, href: "mailto:prajwalgowda17003@gmail.com", label: "Email" },
           ].map((s) => (
             <motion.a

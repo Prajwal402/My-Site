@@ -32,24 +32,6 @@ const projects: Project[] = [
     live: "#",
     category: "Frontend",
   },
-  {
-    title: "Weather App",
-    description:
-      "Real-time weather tracking with auto-location detection, 5-day forecasts, and dynamic background themes based on conditions.",
-    tech: ["JavaScript", "HTML5", "OpenWeather API"],
-    github: "https://github.com/prajwalgowda",
-    live: "#",
-    category: "Frontend",
-  },
-  {
-    title: "AI Chatbot Integration",
-    description:
-      "An intelligent chatbot powered by API integration with natural language processing, conversation history, and smart replies.",
-    tech: ["Node.js", "Python", "React.js", "API"],
-    github: "https://github.com/prajwalgowda",
-    live: "#",
-    category: "Full Stack",
-  },
 ];
 
 const filters = ["All", "Frontend", "Backend", "Full Stack"] as const;
