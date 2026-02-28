@@ -7,24 +7,25 @@ interface OrbConfig {
   color: "primary" | "accent";
   delay: number;
   duration: number;
+  blur: number;
 }
 
 const FloatingOrbs = ({ variant = "default" }: { variant?: "default" | "sparse" | "dense" }) => {
   const configs: Record<string, OrbConfig[]> = {
     default: [
-      { size: 200, x: "10%", y: "20%", color: "primary", delay: 0, duration: 8 },
-      { size: 150, x: "80%", y: "60%", color: "accent", delay: 2, duration: 10 },
-      { size: 100, x: "60%", y: "10%", color: "primary", delay: 4, duration: 7 },
+      { size: 250, x: "8%", y: "15%", color: "primary", delay: 0, duration: 12, blur: 80 },
+      { size: 180, x: "78%", y: "55%", color: "accent", delay: 3, duration: 15, blur: 60 },
+      { size: 120, x: "55%", y: "8%", color: "primary", delay: 5, duration: 10, blur: 50 },
     ],
     sparse: [
-      { size: 180, x: "85%", y: "30%", color: "primary", delay: 1, duration: 9 },
-      { size: 120, x: "15%", y: "70%", color: "accent", delay: 3, duration: 11 },
+      { size: 220, x: "82%", y: "25%", color: "primary", delay: 1, duration: 14, blur: 70 },
+      { size: 160, x: "12%", y: "65%", color: "accent", delay: 4, duration: 16, blur: 55 },
     ],
     dense: [
-      { size: 160, x: "5%", y: "15%", color: "primary", delay: 0, duration: 7 },
-      { size: 120, x: "90%", y: "25%", color: "accent", delay: 1, duration: 9 },
-      { size: 140, x: "50%", y: "75%", color: "primary", delay: 2, duration: 8 },
-      { size: 80, x: "30%", y: "50%", color: "accent", delay: 3, duration: 10 },
+      { size: 200, x: "3%", y: "10%", color: "primary", delay: 0, duration: 11, blur: 70 },
+      { size: 150, x: "88%", y: "20%", color: "accent", delay: 1.5, duration: 13, blur: 55 },
+      { size: 180, x: "45%", y: "70%", color: "primary", delay: 3, duration: 12, blur: 65 },
+      { size: 100, x: "25%", y: "45%", color: "accent", delay: 5, duration: 15, blur: 45 },
     ],
   };
 
@@ -39,13 +40,14 @@ const FloatingOrbs = ({ variant = "default" }: { variant?: "default" | "sparse" 
             height: orb.size,
             left: orb.x,
             top: orb.y,
-            background: `radial-gradient(circle, hsl(var(--${orb.color}) / 0.12) 0%, transparent 70%)`,
-            filter: "blur(40px)",
+            background: `radial-gradient(circle, hsl(var(--${orb.color}) / 0.1) 0%, hsl(var(--${orb.color}) / 0.03) 40%, transparent 70%)`,
+            filter: `blur(${orb.blur}px)`,
           }}
           animate={{
-            y: [0, -30, 0, 20, 0],
-            x: [0, 15, -10, 5, 0],
-            scale: [1, 1.1, 0.95, 1.05, 1],
+            y: [0, -40, 10, -20, 0],
+            x: [0, 20, -15, 8, 0],
+            scale: [1, 1.15, 0.9, 1.08, 1],
+            opacity: [0.6, 0.9, 0.5, 0.8, 0.6],
           }}
           transition={{
             duration: orb.duration,

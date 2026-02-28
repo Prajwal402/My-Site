@@ -6,23 +6,31 @@ import FloatingOrbs from "./FloatingOrbs";
 import prajwalPhoto from "@/assets/prajwal-photo.jpeg";
 
 const AboutCard = ({ item, i }: { item: { icon: React.ReactNode; title: string; desc: string }; i: number }) => {
-  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(10);
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(12);
   return (
-    <div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="glass rounded-xl p-5 group hover:neon-border transition-all duration-300"
-      style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: i * 0.15 }}
     >
-      <div className="flex items-start gap-4">
-        <span className="text-primary mt-0.5 group-hover:animate-float">{item.icon}</span>
-        <div>
-          <h3 className="font-heading font-semibold text-foreground mb-1">{item.title}</h3>
-          <p className="text-sm text-muted-foreground">{item.desc}</p>
+      <div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="glass-holographic rounded-xl p-5 group hover:neon-border-strong card-3d h-full"
+      >
+        <div className="flex items-start gap-4">
+          <div className="p-2.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+            {item.icon}
+          </div>
+          <div>
+            <h3 className="font-heading font-semibold text-foreground mb-1.5 group-hover:text-primary transition-colors">{item.title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -35,7 +43,7 @@ const AboutSection = () => {
     const rect = photoRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: y * -20, y: x * 20 });
+    setTilt({ x: y * -25, y: x * 25 });
   };
 
   const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
@@ -61,6 +69,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="section-padding relative">
       <FloatingOrbs variant="sparse" />
+      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -70,10 +79,10 @@ const AboutSection = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-2">
-            <span className="neon-text font-mono text-lg mr-2">01.</span>
+            <span className="neon-text-strong font-mono text-lg mr-2">01.</span>
             About Me
           </h2>
-          <div className="w-20 h-0.5 bg-primary/40 mb-10" />
+          <div className="w-24 h-0.5 bg-gradient-to-r from-primary/60 to-transparent mb-10" />
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
@@ -84,21 +93,34 @@ const AboutSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-6"
           >
+            {/* 3D Photo */}
             <div
               ref={photoRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="relative w-52 h-52 mx-auto md:mx-0 mb-4"
-              style={{ perspective: "800px" }}
+              className="relative w-56 h-56 mx-auto md:mx-0 mb-6"
+              style={{ perspective: "1000px" }}
             >
-              {/* Glow ring */}
-              <div
-                className="absolute inset-[-8px] rounded-full border-2 border-primary/30 animate-spin"
+              {/* Outer rotating ring */}
+              <motion.div
+                className="absolute inset-[-12px] rounded-full"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 style={{
-                  animationDuration: "8s",
-                  background: "conic-gradient(from 0deg, transparent, hsl(var(--primary) / 0.3), transparent, transparent)",
-                  maskImage: "radial-gradient(circle, transparent 45%, black 46%)",
-                  WebkitMaskImage: "radial-gradient(circle, transparent 45%, black 46%)",
+                  background: "conic-gradient(from 0deg, transparent, hsl(var(--primary) / 0.4), transparent, hsl(var(--accent) / 0.3), transparent)",
+                  maskImage: "radial-gradient(circle, transparent 44%, black 45%, black 48%, transparent 49%)",
+                  WebkitMaskImage: "radial-gradient(circle, transparent 44%, black 45%, black 48%, transparent 49%)",
+                }}
+              />
+              {/* Inner rotating ring */}
+              <motion.div
+                className="absolute inset-[-4px] rounded-full"
+                animate={{ rotate: -360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                style={{
+                  background: "conic-gradient(from 180deg, transparent, hsl(var(--accent) / 0.3), transparent, hsl(var(--primary) / 0.2), transparent)",
+                  maskImage: "radial-gradient(circle, transparent 46%, black 47%, black 49%, transparent 50%)",
+                  WebkitMaskImage: "radial-gradient(circle, transparent 46%, black 47%, black 49%, transparent 50%)",
                 }}
               />
               <div
@@ -108,29 +130,33 @@ const AboutSection = () => {
                   transformStyle: "preserve-3d",
                 }}
               >
+                {/* Deep shadow layer */}
                 <div
-                  className="absolute inset-2 rounded-full bg-primary/20 blur-2xl"
-                  style={{ transform: "translateZ(-40px)" }}
+                  className="absolute inset-4 rounded-full bg-primary/15 blur-3xl"
+                  style={{ transform: "translateZ(-60px)" }}
                 />
+                {/* Photo */}
                 <img
                   src={prajwalPhoto}
                   alt="Prajwal Gowda"
-                  className="relative w-full h-full rounded-full object-cover border-2 border-primary/40"
+                  className="relative w-full h-full rounded-full object-cover border-2 border-primary/30"
                   style={{
-                    transform: "translateZ(20px)",
-                    boxShadow: "0 0 40px hsl(var(--primary) / 0.25), 0 20px 60px rgba(0,0,0,0.4)",
+                    transform: "translateZ(25px)",
+                    boxShadow: "0 0 50px hsl(var(--primary) / 0.2), 0 25px 80px rgba(0,0,0,0.5)",
                   }}
                 />
+                {/* Glass overlay */}
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
-                    transform: "translateZ(30px)",
-                    background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%)",
+                    transform: "translateZ(35px)",
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 40%, rgba(255,255,255,0.05) 100%)",
                     pointerEvents: "none",
                   }}
                 />
               </div>
             </div>
+
             <p className="text-muted-foreground leading-relaxed">
               I'm a passionate Full Stack Developer with a strong foundation in both frontend and backend technologies. 
               I love transforming complex problems into simple, elegant, and intuitive solutions.
@@ -150,7 +176,7 @@ const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid gap-4"
+            className="grid gap-5"
           >
             {cards.map((item, i) => (
               <AboutCard key={i} item={item} i={i} />

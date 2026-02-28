@@ -42,29 +42,32 @@ const SkillBar = ({ skill, delay }: { skill: Skill; delay: number }) => (
     className="group"
   >
     <div className="flex items-center justify-between mb-2">
-      <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+      <span className="flex items-center gap-2.5 text-sm font-medium text-foreground">
         <span className="text-lg">{skill.icon}</span>
         {skill.name}
       </span>
-      <span className="text-xs text-primary font-mono">{skill.level}%</span>
+      <span className="text-xs text-primary font-mono opacity-70 group-hover:opacity-100 transition-opacity">{skill.level}%</span>
     </div>
-    <div className="h-2 rounded-full bg-secondary overflow-hidden">
+    <div className="h-2 rounded-full bg-secondary/80 overflow-hidden relative">
       <motion.div
         initial={{ width: 0 }}
         whileInView={{ width: `${skill.level}%` }}
         viewport={{ once: true }}
-        transition={{ duration: 1, delay: delay + 0.2, ease: "easeOut" }}
-        className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
+        transition={{ duration: 1.2, delay: delay + 0.2, ease: "easeOut" }}
+        className="h-full rounded-full relative"
         style={{
-          boxShadow: "0 0 10px hsl(var(--primary) / 0.4)",
+          background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))",
+          boxShadow: "0 0 15px hsl(var(--primary) / 0.4), 0 0 30px hsl(var(--primary) / 0.1)",
         }}
-      />
+      >
+        <div className="absolute right-0 top-0 w-4 h-full bg-gradient-to-l from-white/30 to-transparent rounded-full" />
+      </motion.div>
     </div>
   </motion.div>
 );
 
 const TiltCard = ({ group, gi }: { group: typeof skillGroups[0]; gi: number }) => {
-  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(10);
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(12);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -76,12 +79,14 @@ const TiltCard = ({ group, gi }: { group: typeof skillGroups[0]; gi: number }) =
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="glass rounded-xl p-6 hover:neon-border transition-all duration-300 h-full"
-        style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
+        className="glass-holographic rounded-xl p-6 hover:neon-border-strong card-3d h-full"
       >
-        <h3 className="font-heading font-semibold text-lg text-primary mb-6">
-          {group.title}
-        </h3>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-1 h-6 rounded-full bg-gradient-to-b from-primary to-accent" />
+          <h3 className="font-heading font-semibold text-lg text-primary">
+            {group.title}
+          </h3>
+        </div>
         <div className="space-y-5">
           {group.skills.map((skill, si) => (
             <SkillBar key={skill.name} skill={skill} delay={si * 0.1} />
@@ -96,6 +101,7 @@ const SkillsSection = () => {
   return (
     <section id="skills" className="section-padding relative">
       <FloatingOrbs variant="default" />
+      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -105,10 +111,10 @@ const SkillsSection = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-2">
-            <span className="neon-text font-mono text-lg mr-2">02.</span>
+            <span className="neon-text-strong font-mono text-lg mr-2">02.</span>
             Skills & Technologies
           </h2>
-          <div className="w-20 h-0.5 bg-primary/40 mb-10" />
+          <div className="w-24 h-0.5 bg-gradient-to-r from-primary/60 to-transparent mb-10" />
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
