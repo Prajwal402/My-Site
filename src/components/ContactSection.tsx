@@ -19,6 +19,7 @@ const ContactSection = () => {
   return (
     <section id="contact" className="section-padding relative">
       <FloatingOrbs variant="dense" />
+      <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
 
       <div className="max-w-3xl mx-auto text-center relative z-10">
         <motion.div
@@ -28,10 +29,10 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-2">
-            <span className="neon-text font-mono text-lg mr-2">05.</span>
+            <span className="neon-text-strong font-mono text-lg mr-2">05.</span>
             Get In Touch
           </h2>
-          <div className="w-20 h-0.5 bg-primary/40 mx-auto mb-6" />
+          <div className="w-24 h-0.5 bg-gradient-to-r from-primary/60 to-transparent mx-auto mb-6" />
           <p className="text-muted-foreground mb-4 max-w-xl mx-auto">
             I'm currently open to new opportunities. Whether you have a project idea or just want to say hi, my inbox is always open!
           </p>
@@ -53,64 +54,72 @@ const ContactSection = () => {
           ref={formRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="glass rounded-xl p-8 hover:neon-border transition-all duration-300"
-          style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s" }}
+          className="glass-holographic rounded-xl p-8 hover:neon-border-strong card-3d relative overflow-hidden"
         >
-        <form onSubmit={handleSubmit} className="text-left space-y-5">
-          <div className="grid md:grid-cols-2 gap-5">
-            <div>
-              <label className="text-sm text-muted-foreground mb-1.5 block">Name</label>
-              <input
-                type="text"
-                required
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full bg-secondary/50 border border-border rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-muted-foreground mb-1.5 block">Email</label>
-              <input
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full bg-secondary/50 border border-border rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
-                placeholder="your@email.com"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="text-sm text-muted-foreground mb-1.5 block">Message</label>
-            <textarea
-              required
-              rows={5}
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full bg-secondary/50 border border-border rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all resize-none"
-              placeholder="What's on your mind?"
-            />
-          </div>
+          {/* Top accent */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-          <button
-            type="submit"
-            disabled={submitted}
-            className="flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:shadow-[0_0_30px_hsl(185_100%_50%/0.4)] transition-all duration-300 disabled:opacity-50"
-          >
-            <Send size={16} />
-            {submitted ? "Sent!" : "Send Message"}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="text-left space-y-5">
+            <div className="grid md:grid-cols-2 gap-5">
+              <div>
+                <label className="text-sm text-muted-foreground mb-1.5 block font-mono text-xs">Name</label>
+                <input
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full bg-secondary/30 border border-border/50 rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:bg-secondary/50 transition-all"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-muted-foreground mb-1.5 block font-mono text-xs">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="w-full bg-secondary/30 border border-border/50 rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:bg-secondary/50 transition-all"
+                  placeholder="your@email.com"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-sm text-muted-foreground mb-1.5 block font-mono text-xs">Message</label>
+              <textarea
+                required
+                rows={5}
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="w-full bg-secondary/30 border border-border/50 rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:bg-secondary/50 transition-all resize-none"
+                placeholder="What's on your mind?"
+              />
+            </div>
+
+            <motion.button
+              type="submit"
+              disabled={submitted}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm disabled:opacity-50 relative overflow-hidden group"
+              style={{
+                boxShadow: "0 0 25px hsl(var(--primary) / 0.25), 0 8px 30px hsl(var(--primary) / 0.1)",
+              }}
+            >
+              <Send size={16} />
+              {submitted ? "Sent!" : "Send Message"}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+            </motion.button>
+          </form>
         </motion.div>
 
-        {/* Social links with 3D hover */}
+        {/* Social links */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="flex items-center justify-center gap-6 mt-10"
+          className="flex items-center justify-center gap-5 mt-12"
         >
           {[
             { icon: <Github size={20} />, href: "https://github.com/Prajwal402", label: "GitHub" },
@@ -123,11 +132,10 @@ const ContactSection = () => {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-12 h-12 rounded-xl glass flex items-center justify-center text-muted-foreground hover:text-primary hover:neon-border transition-all duration-300"
+              className="w-12 h-12 rounded-xl glass-holographic flex items-center justify-center text-muted-foreground hover:text-primary hover:neon-border-strong transition-all duration-300"
               aria-label={s.label}
-              whileHover={{ scale: 1.15, rotateY: 15 }}
+              whileHover={{ scale: 1.15, y: -4 }}
               whileTap={{ scale: 0.95 }}
-              style={{ perspective: "600px" }}
             >
               {s.icon}
             </motion.a>
