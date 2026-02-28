@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Send, Github, Linkedin, Mail, Instagram } from "lucide-react";
+import { Send, Github, Linkedin, Mail, Instagram, Phone } from "lucide-react";
 import { useTilt3D } from "@/hooks/useTilt3D";
 import FloatingOrbs from "./FloatingOrbs";
 
@@ -32,9 +32,17 @@ const ContactSection = () => {
             Get In Touch
           </h2>
           <div className="w-20 h-0.5 bg-primary/40 mx-auto mb-6" />
-          <p className="text-muted-foreground mb-10 max-w-xl mx-auto">
+          <p className="text-muted-foreground mb-4 max-w-xl mx-auto">
             I'm currently open to new opportunities. Whether you have a project idea or just want to say hi, my inbox is always open!
           </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 text-sm text-muted-foreground">
+            <a href="mailto:prajwalgowda17003@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
+              <Mail size={16} /> prajwalgowda17003@gmail.com
+            </a>
+            <a href="tel:+917899815573" className="flex items-center gap-2 hover:text-primary transition-colors">
+              <Phone size={16} /> +91 7899815573
+            </a>
+          </div>
         </motion.div>
 
         <motion.div
