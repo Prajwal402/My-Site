@@ -15,6 +15,15 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "Ganesh Fruit Juice Centre",
+    description:
+      "A fully responsive website built for a local fruit juice business, featuring an attractive menu display, online ordering interface, and modern UI design.",
+    tech: ["React.js", "CSS3", "JavaScript"],
+    github: "https://github.com/Prajwal402/Ganesh-Fruit-Juice-Centre",
+    live: "#",
+    category: "Frontend",
+  },
+  {
     title: "Banking System Simulation",
     description:
       "A full-stack banking application with user authentication, account management, transaction history, and real-time balance updates.",
