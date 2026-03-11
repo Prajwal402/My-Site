@@ -20,7 +20,7 @@ const projects: Project[] = [
       "A fully responsive website built for a local fruit juice business, featuring an attractive menu display, online ordering interface, and modern UI design.",
     tech: ["React.js", "CSS3", "JavaScript"],
     github: "https://github.com/Prajwal402/Ganesh-Fruit-Juice-Centre",
-    live: "#",
+    live: "https://ganesh-fruit-juice-centre.vercel.app/",
     category: "Frontend",
   },
   {
@@ -29,7 +29,7 @@ const projects: Project[] = [
       "A full-stack banking application with user authentication, account management, transaction history, and real-time balance updates.",
     tech: ["Python", "MySQL", "React.js", "Node.js"],
     github: "https://github.com/prajwalgowda",
-    live: "#",
+    live: "https://trusted-vault-app.vercel.app/",
     category: "Full Stack",
   },
   {
@@ -38,7 +38,7 @@ const projects: Project[] = [
       "A pixel-perfect Netflix clone with dynamic content fetching from TMDB API, trailer playback, and responsive category rows.",
     tech: ["React.js", "CSS3", "TMDB API"],
     github: "https://github.com/prajwalgowda",
-    live: "#",
+    live: "https://trusted-vault-app.vercel.app/",
     category: "Frontend",
   },
 ];
