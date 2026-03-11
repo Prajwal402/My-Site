@@ -38,7 +38,7 @@ const projects: Project[] = [
       "A pixel-perfect Netflix clone with dynamic content fetching from TMDB API, trailer playback, and responsive category rows.",
     tech: ["React.js", "CSS3", "TMDB API"],
     github: "https://github.com/prajwalgowda",
-    live: "https://trusted-vault-app.vercel.app/",
+    live: "https://flick-lover-ui.vercel.app/",
     category: "Frontend",
   },
 ];
