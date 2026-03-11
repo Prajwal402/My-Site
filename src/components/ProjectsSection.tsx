@@ -29,7 +29,7 @@ const projects: Project[] = [
       "A full-stack banking application with user authentication, account management, transaction history, and real-time balance updates.",
     tech: ["Python", "MySQL", "React.js", "Node.js"],
     github: "https://github.com/prajwalgowda",
-    live: "#",
+    live: "https://trusted-vault-app.vercel.app/",
     category: "Full Stack",
   },
   {
