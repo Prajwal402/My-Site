@@ -1,7 +1,70 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, MeshTransmissionMaterial } from "@react-three/drei";
+import { Float, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
+
+const CrystalGeometry = ({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) => {
+  const meshRef = useRef<THREE.Mesh>(null!);
+  const glowRef = useRef<THREE.Mesh>(null!);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = state.clock.elapsedTime * 0.12;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.08;
+      meshRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.15) * 0.3;
+    }
+    if (glowRef.current) {
+      glowRef.current.rotation.x = -state.clock.elapsedTime * 0.08;
+      glowRef.current.rotation.y = state.clock.elapsedTime * 0.12;
+      const pulse = Math.sin(state.clock.elapsedTime * 0.5) * 0.02 + 0.07;
+      (glowRef.current.material as THREE.MeshBasicMaterial).opacity = pulse;
+    }
+  });
+
+  return (
+    <Float speed={1.2} rotationIntensity={0.2} floatIntensity={1.5}>
+      <group position={position} scale={scale}>
+        <mesh ref={meshRef}>
+          <octahedronGeometry args={[1, 0]} />
+          <meshPhysicalMaterial
+            color="#00e5ff"
+            transparent
+            opacity={0.12}
+            wireframe
+            roughness={0}
+            metalness={0.9}
+            emissive="#00e5ff"
+            emissiveIntensity={0.15}
+          />
+        </mesh>
+        <mesh ref={glowRef}>
+          <octahedronGeometry args={[1.3, 0]} />
+          <meshBasicMaterial color="#00e5ff" transparent opacity={0.06} wireframe />
+        </mesh>
+      </group>
+    </Float>
+  );
+};
+
+const AnimatedTorusKnot = () => {
+  const ref = useRef<THREE.Mesh>(null!);
+
+  useFrame((state) => {
+    if (ref.current) {
+      ref.current.rotation.x = state.clock.elapsedTime * 0.06;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.04;
+    }
+  });
+
+  return (
+    <Float speed={0.6} floatIntensity={0.8}>
+      <mesh ref={ref} position={[0, 0, -5]} scale={2.2}>
+        <torusKnotGeometry args={[1, 0.02, 200, 8, 3, 5]} />
+        <meshBasicMaterial color="#00e5ff" transparent opacity={0.08} />
+      </mesh>
+    </Float>
+  );
+};
 
 const GlowingSphere = ({ position, color, scale = 1 }: { position: [number, number, number]; color: string; scale?: number }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
@@ -20,10 +83,10 @@ const GlowingSphere = ({ position, color, scale = 1 }: { position: [number, numb
         <MeshDistortMaterial
           color={color}
           transparent
-          opacity={0.08}
+          opacity={0.06}
           wireframe
-          distort={0.4}
-          speed={1.5}
+          distort={0.35}
+          speed={1.2}
           roughness={0}
         />
       </mesh>
@@ -31,7 +94,7 @@ const GlowingSphere = ({ position, color, scale = 1 }: { position: [number, numb
   );
 };
 
-const HolographicRing = ({ position, color, radius = 2 }: { position: [number, number, number]; color: string; radius?: number }) => {
+const HolographicRing = ({ position, color, radius = 2, tubeRadius = 0.015 }: { position: [number, number, number]; color: string; radius?: number; tubeRadius?: number }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
 
   useFrame((state) => {
@@ -44,35 +107,43 @@ const HolographicRing = ({ position, color, radius = 2 }: { position: [number, n
   return (
     <Float speed={0.8} floatIntensity={1}>
       <mesh ref={meshRef} position={position}>
-        <torusGeometry args={[radius, 0.02, 16, 100]} />
-        <meshBasicMaterial color={color} transparent opacity={0.2} />
+        <torusGeometry args={[radius, tubeRadius, 16, 100]} />
+        <meshBasicMaterial color={color} transparent opacity={0.15} />
       </mesh>
     </Float>
   );
 };
 
-const Particles = ({ count = 400 }) => {
+const ParticleNebula = ({ count = 600 }) => {
   const points = useRef<THREE.Points>(null!);
 
-  const { positions, sizes } = useMemo(() => {
+  const { positions, colors } = useMemo(() => {
     const positions = new Float32Array(count * 3);
-    const sizes = new Float32Array(count);
+    const colors = new Float32Array(count * 3);
+    const cyan = new THREE.Color("#00e5ff");
+    const purple = new THREE.Color("#9333ea");
+
     for (let i = 0; i < count; i++) {
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
-      const r = 5 + Math.random() * 15;
+      const r = 4 + Math.random() * 18;
       positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = r * Math.cos(phi);
-      sizes[i] = Math.random() * 0.04 + 0.01;
+
+      const mix = Math.random();
+      const color = cyan.clone().lerp(purple, mix);
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
     }
-    return { positions, sizes };
+    return { positions, colors };
   }, [count]);
 
   useFrame((state) => {
     if (points.current) {
-      points.current.rotation.y = state.clock.elapsedTime * 0.015;
-      points.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.1;
+      points.current.rotation.y = state.clock.elapsedTime * 0.012;
+      points.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.008) * 0.15;
     }
   });
 
@@ -80,12 +151,13 @@ const Particles = ({ count = 400 }) => {
     <points ref={points}>
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.035}
-        color="#00e5ff"
+        size={0.04}
+        vertexColors
         transparent
-        opacity={0.5}
+        opacity={0.6}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -99,14 +171,14 @@ const ConnectingLines = () => {
 
   const lines = useMemo(() => {
     const result: { start: THREE.Vector3; end: THREE.Vector3 }[] = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 12; i++) {
       const start = new THREE.Vector3(
-        (Math.random() - 0.5) * 12,
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 6
+        (Math.random() - 0.5) * 14,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 8
       );
       const end = new THREE.Vector3(
-        start.x + (Math.random() - 0.5) * 6,
+        start.x + (Math.random() - 0.5) * 5,
         start.y + (Math.random() - 0.5) * 4,
         start.z + (Math.random() - 0.5) * 3
       );
@@ -117,7 +189,7 @@ const ConnectingLines = () => {
 
   useFrame((state) => {
     if (linesRef.current) {
-      linesRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.05) * 0.2;
+      linesRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.04) * 0.15;
     }
   });
 
@@ -125,7 +197,7 @@ const ConnectingLines = () => {
     <group ref={linesRef}>
       {lines.map((line, i) => {
         const geometry = new THREE.BufferGeometry().setFromPoints([line.start, line.end]);
-        const material = new THREE.LineBasicMaterial({ color: "#00e5ff", transparent: true, opacity: 0.06 });
+        const material = new THREE.LineBasicMaterial({ color: "#00e5ff", transparent: true, opacity: 0.04 });
         const lineObj = new THREE.Line(geometry, material);
         return <primitive key={i} object={lineObj} />;
       })}
@@ -136,21 +208,26 @@ const ConnectingLines = () => {
 const Scene = () => {
   return (
     <>
-      <ambientLight intensity={0.2} />
-      <pointLight position={[5, 5, 5]} intensity={0.4} color="#00e5ff" />
-      <pointLight position={[-5, -3, -5]} intensity={0.2} color="#9333ea" />
+      <ambientLight intensity={0.15} />
+      <pointLight position={[5, 5, 5]} intensity={0.5} color="#00e5ff" />
+      <pointLight position={[-5, -3, -5]} intensity={0.25} color="#9333ea" />
       <pointLight position={[0, -5, 3]} intensity={0.15} color="#00e5ff" />
+      <pointLight position={[3, 4, -3]} intensity={0.1} color="#6366f1" />
 
-      <GlowingSphere position={[-4, 2, -3]} color="#00e5ff" scale={1.2} />
-      <GlowingSphere position={[4, -1.5, -4]} color="#9333ea" scale={0.9} />
-      <GlowingSphere position={[-2, -2.5, -2]} color="#00e5ff" scale={0.7} />
-      <GlowingSphere position={[2.5, 3, -5]} color="#9333ea" scale={1.4} />
+      <AnimatedTorusKnot />
 
-      <HolographicRing position={[0, 0, -3]} color="#00e5ff" radius={3.5} />
-      <HolographicRing position={[1, -1, -5]} color="#9333ea" radius={2} />
+      <CrystalGeometry position={[-4.5, 2.5, -3]} scale={1.1} />
+      <CrystalGeometry position={[5, -2, -4]} scale={0.7} />
+
+      <GlowingSphere position={[-3, -2, -4]} color="#00e5ff" scale={0.9} />
+      <GlowingSphere position={[3, 3, -6]} color="#9333ea" scale={1.3} />
+
+      <HolographicRing position={[0, 0.5, -3]} color="#00e5ff" radius={4} />
+      <HolographicRing position={[-1, -1, -6]} color="#9333ea" radius={2.5} tubeRadius={0.01} />
+      <HolographicRing position={[2, 2, -4]} color="#6366f1" radius={1.5} tubeRadius={0.008} />
 
       <ConnectingLines />
-      <Particles count={500} />
+      <ParticleNebula count={700} />
     </>
   );
 };

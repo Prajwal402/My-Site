@@ -40,26 +40,26 @@ const TimelineCard = ({ item, i }: { item: typeof timeline[0]; i: number }) => {
   return (
     <motion.div
       key={i}
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 35 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: i * 0.15 }}
-      className={`relative flex items-start gap-6 mb-14 ${
+      className={`relative flex items-start gap-6 mb-16 ${
         i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
       }`}
     >
       {/* Dot with pulse rings */}
       <div className="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 mt-2">
-        <div className="w-3.5 h-3.5 rounded-full bg-primary relative" style={{
-          boxShadow: "0 0 15px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.2)",
+        <div className="w-4 h-4 rounded-full bg-primary relative" style={{
+          boxShadow: "0 0 20px hsl(var(--primary) / 0.6), 0 0 50px hsl(var(--primary) / 0.2)",
         }}>
           <motion.div
             className="absolute inset-[-6px] rounded-full border border-primary/30"
-            animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
+            animate={{ scale: [1, 2.2, 1], opacity: [0.5, 0, 0.5] }}
             transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
           />
           <motion.div
-            className="absolute inset-[-12px] rounded-full border border-primary/15"
+            className="absolute inset-[-14px] rounded-full border border-primary/15"
             animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0, 0.3] }}
             transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 + 0.5 }}
           />
@@ -76,18 +76,18 @@ const TimelineCard = ({ item, i }: { item: typeof timeline[0]; i: number }) => {
           ref={ref}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="glass-holographic rounded-xl p-6 hover:neon-border-strong card-3d relative overflow-hidden"
+          className="glass-holographic rounded-xl p-7 hover:neon-border-strong card-3d relative overflow-hidden"
         >
           {/* Top accent */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
           <div className={`flex items-center gap-2.5 mb-3 ${i % 2 === 0 ? "md:justify-end" : ""}`}>
-            <span className="p-1.5 rounded-md bg-primary/10 text-primary">
+            <span className="p-2 rounded-lg bg-primary/10 text-primary">
               {item.type === "work" ? <Briefcase size={14} /> : <GraduationCap size={14} />}
             </span>
-            <span className="text-xs font-mono text-primary/80">{item.period}</span>
+            <span className="text-xs font-mono text-primary/80 tracking-wider">{item.period}</span>
           </div>
-          <h3 className="font-heading font-semibold text-foreground mb-2">{item.title}</h3>
+          <h3 className="font-heading font-semibold text-foreground mb-2.5">{item.title}</h3>
           <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
         </div>
       </div>
@@ -97,7 +97,7 @@ const TimelineCard = ({ item, i }: { item: typeof timeline[0]; i: number }) => {
 
 const ExperienceSection = () => {
   return (
-    <section id="experience" className="section-padding relative">
+    <section id="experience" className="section-padding relative spotlight-section">
       <FloatingOrbs variant="sparse" />
       <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
 
@@ -112,7 +112,7 @@ const ExperienceSection = () => {
             <span className="neon-text-strong font-mono text-lg mr-2">04.</span>
             Experience & Journey
           </h2>
-          <div className="w-24 h-0.5 bg-gradient-to-r from-primary/60 to-transparent mb-12" />
+          <div className="w-24 h-0.5 bg-gradient-to-r from-primary/60 to-transparent mb-14" />
         </motion.div>
 
         <div className="relative">
@@ -120,7 +120,7 @@ const ExperienceSection = () => {
           <div
             className="absolute left-5 md:left-1/2 top-0 bottom-0 w-px"
             style={{
-              background: "linear-gradient(to bottom, hsl(var(--primary) / 0.5), hsl(var(--accent) / 0.3), hsl(var(--primary) / 0.1), transparent)",
+              background: "linear-gradient(to bottom, hsl(var(--primary) / 0.6), hsl(var(--accent) / 0.4), hsl(var(--primary) / 0.15), transparent)",
             }}
           />
 
