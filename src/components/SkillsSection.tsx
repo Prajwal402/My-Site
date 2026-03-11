@@ -41,33 +41,35 @@ const SkillBar = ({ skill, delay }: { skill: Skill; delay: number }) => (
     transition={{ duration: 0.5, delay }}
     className="group"
   >
-    <div className="flex items-center justify-between mb-2">
+    <div className="flex items-center justify-between mb-2.5">
       <span className="flex items-center gap-2.5 text-sm font-medium text-foreground">
         <span className="text-lg">{skill.icon}</span>
         {skill.name}
       </span>
-      <span className="text-xs text-primary font-mono opacity-70 group-hover:opacity-100 transition-opacity">{skill.level}%</span>
+      <span className="text-xs text-primary font-mono opacity-60 group-hover:opacity-100 transition-opacity">{skill.level}%</span>
     </div>
-    <div className="h-2 rounded-full bg-secondary/80 overflow-hidden relative">
+    <div className="h-2.5 rounded-full bg-secondary/60 overflow-hidden relative">
       <motion.div
         initial={{ width: 0 }}
         whileInView={{ width: `${skill.level}%` }}
         viewport={{ once: true }}
-        transition={{ duration: 1.2, delay: delay + 0.2, ease: "easeOut" }}
+        transition={{ duration: 1.4, delay: delay + 0.2, ease: "easeOut" }}
         className="h-full rounded-full relative"
         style={{
-          background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))",
-          boxShadow: "0 0 15px hsl(var(--primary) / 0.4), 0 0 30px hsl(var(--primary) / 0.1)",
+          background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))",
+          backgroundSize: "200% 100%",
+          animation: "shimmer-text 3s ease-in-out infinite",
+          boxShadow: "0 0 20px hsl(var(--primary) / 0.4), 0 0 40px hsl(var(--primary) / 0.1)",
         }}
       >
-        <div className="absolute right-0 top-0 w-4 h-full bg-gradient-to-l from-white/30 to-transparent rounded-full" />
+        <div className="absolute right-0 top-0 w-6 h-full bg-gradient-to-l from-white/25 to-transparent rounded-full" />
       </motion.div>
     </div>
   </motion.div>
 );
 
 const TiltCard = ({ group, gi }: { group: typeof skillGroups[0]; gi: number }) => {
-  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(12);
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(14);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -79,15 +81,15 @@ const TiltCard = ({ group, gi }: { group: typeof skillGroups[0]; gi: number }) =
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="glass-holographic rounded-xl p-6 hover:neon-border-strong card-3d h-full"
+        className="glass-holographic rounded-xl p-7 hover:neon-border-strong card-3d h-full"
       >
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-6 rounded-full bg-gradient-to-b from-primary to-accent" />
+        <div className="flex items-center gap-3 mb-7">
+          <div className="w-1.5 h-7 rounded-full bg-gradient-to-b from-primary via-accent to-primary" />
           <h3 className="font-heading font-semibold text-lg text-primary">
             {group.title}
           </h3>
         </div>
-        <div className="space-y-5">
+        <div className="space-y-6">
           {group.skills.map((skill, si) => (
             <SkillBar key={skill.name} skill={skill} delay={si * 0.1} />
           ))}
@@ -99,9 +101,9 @@ const TiltCard = ({ group, gi }: { group: typeof skillGroups[0]; gi: number }) =
 
 const SkillsSection = () => {
   return (
-    <section id="skills" className="section-padding relative">
+    <section id="skills" className="section-padding relative spotlight-section">
       <FloatingOrbs variant="default" />
-      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
+      <div className="absolute inset-0 grid-bg opacity-25 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div

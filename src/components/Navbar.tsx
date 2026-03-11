@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -29,13 +29,13 @@ const Navbar = () => {
         scrolled ? "glass-strong" : "bg-transparent"
       }`}
       style={scrolled ? {
-        boxShadow: "0 4px 30px rgba(0,0,0,0.4), 0 0 20px hsl(var(--primary) / 0.04)",
+        boxShadow: "0 4px 30px rgba(0,0,0,0.5), 0 0 20px hsl(var(--primary) / 0.03)",
       } : undefined}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <motion.a
           href="#"
-          className="text-xl font-heading font-bold neon-text-strong"
+          className="text-xl font-heading font-bold neon-text-strong tracking-tight"
           whileHover={{ scale: 1.05 }}
         >
           {"<PG />"}
@@ -52,10 +52,10 @@ const Navbar = () => {
             >
               <a
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 relative group"
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 relative group py-1"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
               </a>
             </motion.li>
           ))}
@@ -86,27 +86,30 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu */}
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden glass-strong border-t border-border/50"
-        >
-          <ul className="flex flex-col items-center gap-4 py-6">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden glass-strong border-t border-border/50 overflow-hidden"
+          >
+            <ul className="flex flex-col items-center gap-4 py-6">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 };
