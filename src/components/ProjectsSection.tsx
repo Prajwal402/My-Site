@@ -20,7 +20,7 @@ const projects: Project[] = [
       "A fully responsive website built for a local fruit juice business, featuring an attractive menu display, online ordering interface, and modern UI design.",
     tech: ["React.js", "CSS3", "JavaScript"],
     github: "https://github.com/Prajwal402/Ganesh-Fruit-Juice-Centre",
-    live: "#",
+    live: "https://ganesh-fruit-juice-centre.vercel.app/",
     category: "Frontend",
   },
   {
