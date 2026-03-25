@@ -47,7 +47,7 @@ const projects: Project[] = [
       "A Learning Management System with course management, student enrollment, and interactive learning features for an engaging educational experience.",
     tech: ["React.js", "Node.js", "MongoDB"],
     github: "https://github.com/Prajwal402/LMS",
-    live: "https://lms-liard-beta.vercel.app/",
+    live: "https://learn-pathways-18-5jne.vercel.app/",
     category: "Full Stack",
   },
 ];
