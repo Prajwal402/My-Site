@@ -33,7 +33,7 @@ const projects: Project[] = [
     category: "Full Stack",
   },
   {
-    title: "Netflix Clone UI (Vibe Coding)",
+    title: "Vibe Coding - Netflix Clone UI",
     description:
       "A pixel-perfect Netflix clone with dynamic content fetching from TMDB API, trailer playback, and responsive category rows.",
     tech: ["React.js", "CSS3", "TMDB API"],
