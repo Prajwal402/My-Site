@@ -24,7 +24,7 @@ const projects: Project[] = [
     category: "Frontend",
   },
   {
-    title: "Banking System Simulation (Vibe Coding)",
+    title: "Vibe Coding - Banking System Simulation",
     description:
       "A full-stack banking application with user authentication, account management, transaction history, and real-time balance updates.",
     tech: ["Python", "MySQL", "React.js", "Node.js"],
