@@ -41,6 +41,15 @@ const projects: Project[] = [
     live: "https://flick-lover-ui-c6kd.vercel.app/",
     category: "Frontend",
   },
+  {
+    title: "Vibe Coding - LMS",
+    description:
+      "A Learning Management System with course management, student enrollment, and interactive learning features for an engaging educational experience.",
+    tech: ["React.js", "Node.js", "MongoDB"],
+    github: "https://github.com/Prajwal402/LMS",
+    live: "https://lms-liard-beta.vercel.app/",
+    category: "Full Stack",
+  },
 ];
 
 const filters = ["All", "Frontend", "Backend", "Full Stack"] as const;
