@@ -1,0 +1,1 @@
+- [x] Replace the current About photo with the newly uploaded image.
