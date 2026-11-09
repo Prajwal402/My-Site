@@ -3,7 +3,7 @@ import { Code2, Server, Lightbulb } from "lucide-react";
 import { useRef, useState } from "react";
 import { useTilt3D } from "@/hooks/useTilt3D";
 import FloatingOrbs from "./FloatingOrbs";
-import prajwalPhoto from "@/assets/prajwal-profile.png.asset.json";
+import prajwalPhoto from "@/assets/prajwal-suit.jpeg.asset.json";
 
 const AboutCard = ({ item, i }: { item: { icon: React.ReactNode; title: string; desc: string }; i: number }) => {
   const { ref, handleMouseMove, handleMouseLeave } = useTilt3D(14);
@@ -143,7 +143,7 @@ const AboutSection = () => {
                 <img
                   src={prajwalPhoto.url}
                   alt="Prajwal Gowda"
-                  className="relative w-full h-full rounded-full object-cover border-2 border-primary/25"
+                  className="relative w-full h-full rounded-full object-cover object-top border-2 border-primary/25"
                   style={{
                     transform: "translateZ(30px)",
                     boxShadow: "0 0 60px hsl(var(--primary) / 0.2), 0 30px 80px rgba(0,0,0,0.5)",
