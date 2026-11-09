@@ -143,7 +143,7 @@ const AboutSection = () => {
                 <img
                   src={prajwalPhoto.url}
                   alt="Prajwal Gowda"
-                  className="relative w-full h-full rounded-full object-cover border-2 border-primary/25"
+                  className="relative w-full h-full rounded-full object-cover object-top border-2 border-primary/25"
                   style={{
                     transform: "translateZ(30px)",
                     boxShadow: "0 0 60px hsl(var(--primary) / 0.2), 0 30px 80px rgba(0,0,0,0.5)",
