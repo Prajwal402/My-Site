@@ -141,7 +141,7 @@ const AboutSection = () => {
                 />
                 {/* Photo */}
                 <img
-                  src={prajwalPhoto}
+                  src={prajwalPhoto.url}
                   alt="Prajwal Gowda"
                   className="relative w-full h-full rounded-full object-cover border-2 border-primary/25"
                   style={{
